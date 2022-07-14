@@ -19,11 +19,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   var _timeString;
+  bool isCheckIn;
 
   @override
   void initState() {
     _timeString = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    isCheckIn = false;
     super.initState();
   }
 
@@ -80,7 +82,49 @@ class _HomeState extends State<Home> {
                                   TextStyle(fontSize: 16, color: Colors.white))
                         ],
                       )),
-                  Card(
+                  isCheckIn ?
+                  Card( // Jika sudah check in muncul cart ini untuk warna merah
+                    margin: EdgeInsets.symmetric(horizontal: 17),
+                    clipBehavior: Clip.antiAlias,
+                    child: Container(
+                      color: Colors.red
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/lgfinger.png'),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                _timeString,
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 12),
+                                child: Text(
+                                  DateFormat.yMMMEd().format(DateTime.now()),
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 72),
+                          IconButton(
+                            icon: Image.asset('assets/lgabsen.png'),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: Image.asset('assets/lghadir.png'),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ) : Card( // jika belum muncul card yang ini default putih 
                     margin: EdgeInsets.symmetric(horizontal: 17),
                     clipBehavior: Clip.antiAlias,
                     child: Container(
@@ -115,7 +159,11 @@ class _HomeState extends State<Home> {
                           ),
                           IconButton(
                             icon: Image.asset('assets/lghadir.png'),
-                            onPressed: () {},
+                            onPressed: () {
+                              setState((){
+                                isCheckIn = true;
+                              });
+                            },
                           ),
                         ],
                       ),
